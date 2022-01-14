@@ -1,0 +1,14 @@
+sacremoses
+psutil
+more_itertools
+cytoolz
+cffi
+cython
+editdistance
+numpy
+regex
+sacrebleu
+tqdm
+portalocker
+hydra-core==1.0.3
+torch==1.8
