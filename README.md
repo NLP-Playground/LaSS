@@ -37,7 +37,7 @@ For IWSLT we used in the paper, we directly use [this scripts](https://github.co
 
 For WMT, we collect data from the official WMT website. For details please refer to the appendix of  our paper.
 
-We provide some [data preprocessing scripts]() for reference.
+We provide some [data preprocessing scripts](scripts/data%20processing) for reference.
 
 ### Multilingual baseline
 
@@ -74,7 +74,7 @@ The last step is to continue training the vanilla multilingual model with the ob
 bash scripts/train.sh —config multilingual.yml
 ```
 
-The yaml config mentioned above can be found in [here]().
+The yaml config mentioned above can be found in [here](configs/demo).
 
 
 ### Evaluation
