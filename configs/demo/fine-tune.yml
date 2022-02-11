@@ -1,0 +1,67 @@
+
+data_bin: data-bin/multilingual-kd_iwslt_cased/de2en
+save_dir: checkpoints/iwslt/baseline/multilingual_finetuning/de2en_fine-tuning
+tensorboard_logdir: tensorboard_logdir/iwslt/baseline/multilingual_finetuning/de2en_fine-tuning
+#hdfs_yml_config: yml_config/iwslt/baseline/multilingual_finetuning/de2en_fine-tuning.yml
+restore-file: checkpoints/iwslt/baseline/multilingual/multilingual_transformer_iwslt_arch_dp0.1_nodecay_bigbatch_normal_lr/checkpoint_best.pt
+
+
+reset_dataloader: true
+reset_meters: true
+reset_optimizer: true
+reset_lr_scheduler: true
+
+langs: fa,he,pl,it,ar,es,de,nl,en
+lang_pairs: de-en
+
+arch: transformer_iwslt_de_en
+share_decoder_input_output_embed: true
+dropout: 0.3
+
+
+task: translation_multi_simple_epoch
+sampling_method: temperature
+sampling_temperature: 2
+encoder_langtok: src
+decoder_langtok: true
+
+criterion: label_smoothed_cross_entropy
+label_smoothing: 0.1
+optimizer: adam
+adam_betas: "'(0.9, 0.98)'"
+clip_norm: 0.0
+lr: 5e-4
+lr_scheduler: inverse_sqrt
+warmup_updates: 4000
+weight_decay: 0.0
+
+max_tokens: 16384
+update_freq: 1
+
+max_update: 160000
+fp16: true
+
+patience: 30
+save_interval: 1000
+save_interval_updates: 500
+keep_interval_updates: 15
+no_epoch_checkpoints: true
+seed: 22
+log_format: simple
+log_interval: 20
+
+#seed: 1234
+#log_format: simple
+#log_interval: 50
+#patience: 15
+#keep_last_epochs: 20
+#
+#eval-bleu: true
+#eval-tokenized-bleu: true
+#eval-bleu-args: "'{\"beam\": 5, \"max_len_a\": 1.2, \"max_len_b\": 10}'"
+#eval-bleu-remove-bpe: true
+#eval-bleu-print-samples: true
+#best-checkpoint-metric: bleu
+#maximize-best-checkpoint-metric: true
+
+

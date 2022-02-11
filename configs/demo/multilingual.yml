@@ -1,0 +1,73 @@
+
+data_bin: data-bin/multilingual-kd_iwslt_cased/multilingual
+save_dir: checkpoints/iwslt/baseline/multilingual_static_mask/multilingual_static_mask_prob${prob}
+tensorboard_logdir: tensorboard_logdir/iwslt/baseline/multilingual_static_mask/multilingual_static_mask_prob${prob}
+#hdfs_yml_config: yml_config/iwslt/baseline/multilingual_static_mask/multilingual_static_mask_prob${prob}.yml
+restore-file: checkpoints/iwslt/baseline/multilingual/multilingual_transformer_iwslt_arch_dp0.1_nodecay_bigbatch_normal_lr/checkpoint_best.pt
+
+reset_dataloader: true
+reset_meters: true
+reset_optimizer: true
+reset_lr_scheduler: true
+
+langs: fa,he,pl,it,ar,es,de,nl,en
+lang_pairs: ar-en,de-en,en-ar,en-de,en-es,en-fa,en-he,en-it,en-nl,en-pl,es-en,fa-en,he-en,it-en,nl-en,pl-en
+
+arch: transformer_iwslt_arch_with_mask
+share_decoder_input_output_embed: true
+dropout: 0.1
+
+
+task: mask_translation_multi_simple_epoch
+no-mask-output-project: true
+no-save-static-mask: true
+mask_path: "'{\"de-en\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/de2en_ft_mask_prob_${prob}.pt\",
+              \"en-de\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/en2de_ft_mask_prob_${prob}.pt\",
+              \"ar-en\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/ar2en_ft_mask_prob_${prob}.pt\",
+              \"en-ar\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/en2ar_ft_mask_prob_${prob}.pt\",
+              \"en-es\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/en2es_ft_mask_prob_${prob}.pt\",
+              \"es-en\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/es2en_ft_mask_prob_${prob}.pt\",
+              \"en-fa\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/en2fa_ft_mask_prob_${prob}.pt\",
+              \"fa-en\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/fa2en_ft_mask_prob_${prob}.pt\",
+              \"en-he\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/en2he_ft_mask_prob_${prob}.pt\",
+              \"he-en\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/he2en_ft_mask_prob_${prob}.pt\",
+              \"en-it\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/en2it_ft_mask_prob_${prob}.pt\",
+              \"it-en\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/it2en_ft_mask_prob_${prob}.pt\",
+              \"en-nl\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/en2nl_ft_mask_prob_${prob}.pt\",
+              \"nl-en\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/nl2en_ft_mask_prob_${prob}.pt\",
+              \"en-pl\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/en2pl_ft_mask_prob_${prob}.pt\",
+              \"pl-en\": \"checkpoints/iwslt/baseline/multilingual_finetuning/abs_mask_path/pl2en_ft_mask_prob_${prob}.pt\"
+              }'"
+sampling_method: temperature
+sampling_temperature: 2
+encoder_langtok: src
+decoder_langtok: true
+
+criterion: label_smoothed_cross_entropy
+label_smoothing: 0.1
+optimizer: adam
+adam_betas: "'(0.9, 0.98)'"
+clip_norm: 0.0
+lr: 5e-4
+lr_scheduler: inverse_sqrt
+warmup_updates: 4000
+weight_decay: 0.0
+
+# 4 gpu
+max_tokens: 16384
+update_freq: 4
+
+max_update: 160000
+fp16: true
+ddp_backend: no_c10d
+
+patience: 20
+save_interval: 500
+save_interval_updates: 500
+validate_interval: 500
+validate_interval_updates: 500
+keep_interval_updates: 15
+no_epoch_checkpoints: true
+seed: 23
+log_format: simple
+log_interval: 20

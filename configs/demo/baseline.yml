@@ -1,0 +1,44 @@
+
+data_bin: data-bin/multilingual-kd_iwslt_cased/multilingual
+save_dir: checkpoints/iwslt/baseline/multilingual/multilingual_transformer_iwslt_arch_dp0.1_nodecay_bigbatch_normal_lr
+tensorboard_logdir: tensorboard_logdir/iwslt/baseline/multilingual/multilingual_transformer_iwslt_arch_dp0.1_nodecay_bigbatch_normal_lr
+#hdfs_yml_config: yml_config/iwslt/baseline/multilingual/multilingual_transformer_iwslt_arch_dp0.1_nodecay_bigbatch_normal_lr.yml
+
+langs: fa,he,pl,it,ar,es,de,nl,en
+lang_pairs: ar-en,de-en,en-ar,en-de,en-es,en-fa,en-he,en-it,en-nl,en-pl,es-en,fa-en,he-en,it-en,nl-en,pl-en
+
+arch: transformer_iwslt_de_en
+share_decoder_input_output_embed: true
+dropout: 0.1
+
+task: translation_multi_simple_epoch
+sampling_method: temperature
+sampling_temperature: 2
+encoder_langtok: src
+decoder_langtok: true
+
+criterion: label_smoothed_cross_entropy
+label_smoothing: 0.1
+optimizer: adam
+adam_betas: "'(0.9, 0.98)'"
+clip_norm: 0.0
+lr: 5e-4
+lr_scheduler: inverse_sqrt
+warmup_updates: 4000
+weight_decay: 0.0
+
+# 4 gpus
+max_tokens: 16384
+update_freq: 4
+
+max_update: 160000
+fp16: true
+
+
+patience: 20
+save_interval_updates: 1000
+keep_interval_updates: 20
+no_epoch_checkpoints: true
+seed: 22
+log_format: simple
+log_interval: 20
