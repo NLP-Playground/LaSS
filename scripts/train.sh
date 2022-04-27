@@ -19,4 +19,4 @@ export NCCL_IB_DISABLE=0
 export NCCL_IB_GID_INDEX=3
 export NCCL_SOCKET_IFNAME=eth0
 
-python3 toolbox/train.py $@ --train-script-path "$(which fairseq-train)"
+python3 toolbox/train.py $@
